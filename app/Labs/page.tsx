@@ -3,7 +3,6 @@ import Link from "next/link";
 export default function Labs() {
   return (
     <div>
-        <h1>Saravjit Singh</h1>
         <h1>Labs</h1>
      <ul>
        <li>
