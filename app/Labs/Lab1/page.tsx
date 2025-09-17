@@ -12,6 +12,7 @@
 }*/
 
 'use client';
+import Image from "next/image";
 
 export default function Lab1() {
   return (
@@ -73,7 +74,7 @@ My favorite books (in no particular order)
 <ul id="wd-my-books">
   <li>Dune</li>
   <li>Lord of the Rings</li>
-  <li>Ender's Game</li>
+  <li>Ender&apos;s Game</li>
   <li>Red Mars</li>
   <li>The Forever War</li>
 </ul>
@@ -172,13 +173,18 @@ Your favorite books (in no particular order)
 <div id="wd-images">
   <h4>Image tag</h4>
   Loading an image from the internet: <br />
-  <img id="wd-starship" width="400px"   src="https://www.staradvertiser.com/wp-content/uploads/2021/08/web1_Starship-gap2.jpg" />
+  <img id="wd-starship" width="400px"  alt="internet image" src="https://www.staradvertiser.com/wp-content/uploads/2021/08/web1_Starship-gap2.jpg" />
   <br />
   Loading a local image:
   <br />
-  <img id="wd-teslabot" src="/images/teslabot.jpg" height="200px" /></div>
-
-// Password issue
+  <Image
+  id="wd-teslabot"
+  src="/images/teslabot.jpg"
+  alt="Tesla bot"
+  width={200}
+  height={200}
+/>
+  </div>
 <div id="wd-forms">
   <h4>Form Elements</h4>
   <form id="wd-text-fields">
@@ -203,8 +209,6 @@ Your favorite books (in no particular order)
 <label>Biography:</label><br/>
 <textarea id="wd-textarea" cols={30} rows={10} defaultValue={"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."}>
     </textarea>
-
- // buttons
 <h5 id="wd-buttons">Buttons</h5>
 <button id="wd-button-submit" type="submit">Submit</button>
 <button id="wd-button-reset" type="reset">Reset</button>
