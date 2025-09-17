@@ -9,15 +9,15 @@ export default function AssignmentEditor() {
       <br />
       <table>
         <tbody>
-        <tr>
-          <td align="right" valign="top">
-            <label htmlFor="wd-points">Points</label>
-          </td>
-          <td>
-            <input id="wd-points" defaultValue={100} />
-          </td>
-        </tr>
-       <tr>
+          <tr>
+            <td align="right" valign="top">
+              <label htmlFor="wd-points">Points</label>
+            </td>
+            <td>
+              <input id="wd-points" defaultValue={100} />
+            </td>
+          </tr>
+          <tr>
             <td align="right" valign="top">
               <label htmlFor="wd-group">Assignment Group</label>
             </td>
@@ -124,8 +124,9 @@ export default function AssignmentEditor() {
               <button type="button">Cancel</button>
               <button type="submit">Save</button>
             </td>
-          </tr> 
-          </tbody>      
+          </tr>
+        </tbody>
       </table>
     </div>
-);}
+  );
+}

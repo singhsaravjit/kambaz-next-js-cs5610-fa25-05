@@ -10,4 +10,5 @@ export default function CourseStatus() {
       <button>New Announcement</button>
       <button>New Analytics</button>
       <button>View Course Notifications</button>
-    </div> );}
+    </div>);
+}

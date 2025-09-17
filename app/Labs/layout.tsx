@@ -5,7 +5,7 @@ export default function LabLayout({ children }: Readonly<{ children: ReactNode }
         <table>
             <tbody>
                 <tr>
-                    <td  valign = 'top' width= '100px'>
+                    <td valign='top' width='100px'>
                         <TOC />
                     </td>
                     <td valign='top'>
