@@ -47,4 +47,4 @@ export default function Assignments() {
         PROJECT 30% of Total <button>+</button> </h3>
     </div>
   );
-}
+} 
