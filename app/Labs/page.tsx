@@ -21,7 +21,7 @@ export default function Labs() {
           <Link href="/">Kambaz</Link>
         </li>
       </ul>
-      Github: <Link href="https://github.com/singhsaravjit/kambaz-next-js-cs5610-fa25-05">Click Here</Link> to get the code!
+      Github: <Link id="wd-github" href="https://github.com/singhsaravjit/kambaz-next-js-cs5610-fa25-05">Click Here</Link> to get the code!
     </div>
   );
 } 

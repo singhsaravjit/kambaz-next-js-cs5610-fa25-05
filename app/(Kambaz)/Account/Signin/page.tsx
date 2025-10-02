@@ -28,14 +28,14 @@ export default function Signin() {
               />
             </div>
 
-            <Button 
-              id="wd-signin-btn"
-              href="/Account/Profile"
-              as={Link}
-              className="btn btn-primary w-100 btn-lg mb-3"
-              style={{ backgroundColor: "#0d6efd", border: "none" }}>
-              Signin
-            </Button>
+            <Link href="/Account/Profile" className="text-decoration-none">
+              <Button 
+                id="wd-signin-btn"
+                className="btn btn-primary w-100 btn-lg mb-3"
+                style={{ backgroundColor: "#0d6efd", border: "none" }}>
+                Signin
+              </Button>
+            </Link>
           </Form>
 
           <div className="text-start">

@@ -36,13 +36,13 @@ export default function Signup() {
               />
             </div>
 
-            <Button 
-              href="Profile"
-              as={Link} 
-              className="btn btn-primary w-100 btn-lg mb-3"
-              style={{ backgroundColor: "#0d6efd", border: "none" }}>
-              Signup
-            </Button>
+            <Link href="/Account/Profile" className="text-decoration-none">
+              <Button 
+                className="btn btn-primary w-100 btn-lg mb-3"
+                style={{ backgroundColor: "#0d6efd", border: "none" }}>
+                Signup
+              </Button>
+            </Link>
           </Form>
 
           <div className="text-start">

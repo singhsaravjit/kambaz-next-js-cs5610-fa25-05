@@ -83,13 +83,13 @@ export default function Profile() {
               </Form.Select>
             </div>
 
-            <Button 
-              href="Signin"
-              as={Link} 
-              className="btn btn-danger w-100 btn-lg"
-              style={{ backgroundColor: "#dc3545", border: "none" }}>
-              Signout
-            </Button>
+            <Link href="/Account/Signin" className="text-decoration-none">
+              <Button 
+                className="btn btn-danger w-100 btn-lg"
+                style={{ backgroundColor: "#dc3545", border: "none" }}>
+                Signout
+              </Button>
+            </Link>
           </Form>
         </div>
       </Card>
