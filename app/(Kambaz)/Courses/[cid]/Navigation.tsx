@@ -61,6 +61,13 @@ export default function CourseNavigation() {
         Quizzes
       </Link>
       <Link 
+        href="/Courses/1234/Grades" 
+        id="wd-course-grades-link"
+        className={getLinkClass("/Courses/1234/Grades")}
+      >
+        Grades
+      </Link>
+      <Link 
         href="/Courses/1234/People/Table" 
         id="wd-course-people-link"
         className={getLinkClass("/Courses/1234/People")}
