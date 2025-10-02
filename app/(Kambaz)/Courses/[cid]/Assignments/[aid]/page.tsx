@@ -5,7 +5,7 @@ export default function AssignmentEditor() {
   return (
     <div id="wd-assignments-editor" className="container-fluid mt-4">
       <Row>
-        <Col md={8} className="mx-auto">
+        <Col md={10} className="mx-auto">
           <Form>
             <div className="mb-3">
               <Form.Label htmlFor="wd-name">Assignment Name</Form.Label>
@@ -17,13 +17,14 @@ export default function AssignmentEditor() {
               />
             </div>
 
-         <div className="mb-4">
-  <Form.Control 
-    as="textarea" 
-    id="wd-description"
-    rows={10}
-    style={{ lineHeight: '1.8' }}
-    defaultValue={`The assignment is available online
+            <div className="mb-4">
+              <Form.Label>Description</Form.Label>
+              <Form.Control 
+                as="textarea" 
+                id="wd-description"
+                rows={10}
+                style={{ lineHeight: '1.8' }}
+                defaultValue={`The assignment is available online
 
 Submit a link to the landing page of your Web application running on Netlify.
 
@@ -35,9 +36,10 @@ The landing page should include the following:
 - Links to all relevant source code repositories
 
 The Kanbas application should include a link to navigate back to the landing page.`}
-  />
-</div>
-        <Row className="mb-3">
+              />
+            </div>
+
+            <Row className="mb-3">
               <Col md={3} className="text-end">
                 <Form.Label>Points</Form.Label>
               </Col>
@@ -46,7 +48,7 @@ The Kanbas application should include a link to navigate back to the landing pag
                   id="wd-points"
                   type="number"
                   defaultValue={100}
-                  style={{ maxWidth: "200px" }}
+                  style={{ maxWidth: "300px" }}
                 />
               </Col>
             </Row>
@@ -56,7 +58,7 @@ The Kanbas application should include a link to navigate back to the landing pag
                 <Form.Label>Assignment Group</Form.Label>
               </Col>
               <Col md={9}>
-                <Form.Select id="wd-group" defaultValue="ASSIGNMENTS" style={{ maxWidth: "250px" }}>
+                <Form.Select id="wd-group" defaultValue="ASSIGNMENTS" style={{ maxWidth: "100%" }}>
                   <option value="ASSIGNMENTS">ASSIGNMENTS</option>
                   <option value="QUIZZES">QUIZZES</option>
                   <option value="EXAMS">EXAMS</option>
@@ -70,7 +72,7 @@ The Kanbas application should include a link to navigate back to the landing pag
                 <Form.Label>Display Grade as</Form.Label>
               </Col>
               <Col md={9}>
-                <Form.Select id="wd-display-grade-as" defaultValue="Percentage" style={{ maxWidth: "250px" }}>
+                <Form.Select id="wd-display-grade-as" defaultValue="Percentage" style={{ maxWidth: "100%" }}>
                   <option value="Percentage">Percentage</option>
                   <option value="Points">Points</option>
                   <option value="Complete/Incomplete">Complete/Incomplete</option>
@@ -84,7 +86,7 @@ The Kanbas application should include a link to navigate back to the landing pag
                 <Form.Label>Submission Type</Form.Label>
               </Col>
               <Col md={9}>
-                <Card className="p-3" style={{ maxWidth: "400px" }}>
+                <Card className="p-3">
                   <Form.Select id="wd-submission-type" defaultValue="Online" className="mb-3">
                     <option value="Online">Online</option>
                     <option value="On Paper">On Paper</option>
@@ -130,64 +132,61 @@ The Kanbas application should include a link to navigate back to the landing pag
             </Row>
 
             <Row className="mb-3">
-          <Col xs={3} className="text-end">
-            <Form.Label>Assign</Form.Label>
-          </Col>
-          <Col xs={9}>
-            <div className="border rounded p-3" style={{ maxWidth: '400px' }}>
-              <Form.Label htmlFor="wd-assign-to">Assign to</Form.Label>
-              <div className="position-relative">
-                <Form.Control 
-                  id="wd-assign-to" 
-                  defaultValue="Everyone" 
-                  className="pe-5"
-                  style={{ backgroundColor: '#f8f8f8' }}
-                />
-                <span 
-                  className="position-absolute" 
-                  style={{ 
-                    right: '10px', 
-                    top: '50%', 
-                    transform: 'translateY(-50%)',
-                    cursor: 'pointer',
-                    color: '#6c757d'
-                     }}
-                >
-                  ✕
-                </span>
-              </div>
-              
-              <Form.Label htmlFor="wd-due-date" className="mt-3">Due</Form.Label>
-              <Form.Control 
-                type="datetime-local" 
-                id="wd-due-date" 
-                defaultValue="2024-10-10T23:59" 
-              />
-              
-              <Row className="mt-3">
-                <Col>
-                  <Form.Label htmlFor="wd-available-from">Available from</Form.Label>
+              <Col md={3} className="text-end">
+                <Form.Label>Assign</Form.Label>
+              </Col>
+              <Col md={9}>
+                <div className="border rounded p-3">
+                  <Form.Label htmlFor="wd-assign-to">Assign to</Form.Label>
+                  <div className="position-relative">
+                    <Form.Control 
+                      id="wd-assign-to" 
+                      defaultValue="Everyone" 
+                      className="pe-5"
+                      style={{ backgroundColor: '#f8f8f8' }}
+                    />
+                    <span 
+                      className="position-absolute" 
+                      style={{ 
+                        right: '10px', 
+                        top: '50%', 
+                        transform: 'translateY(-50%)',
+                        cursor: 'pointer',
+                        color: '#6c757d'
+                      }}
+                    >
+                      ✕
+                    </span>
+                  </div>
+                  
+                  <Form.Label htmlFor="wd-due-date" className="mt-3">Due</Form.Label>
                   <Form.Control 
-                    type="date" 
-                    id="wd-available-from" 
-                    defaultValue="2024-10-10" 
+                    type="datetime-local" 
+                    id="wd-due-date" 
+                    defaultValue="2024-10-10T23:59" 
                   />
-                </Col>
-                <Col>
-                  <Form.Label htmlFor="wd-available-until">Until</Form.Label>
-                  <Form.Control 
-                    type="date" 
-                      id="wd-available-until" 
-                    defaultValue="2024-11-11" 
-                  />
-                </Col>
-              </Row>
-            </div>
-          </Col>
-        </Row>
-
-
-
+                  
+                  <Row className="mt-3">
+                    <Col>
+                      <Form.Label htmlFor="wd-available-from">Available from</Form.Label>
+                      <Form.Control 
+                        type="date" 
+                        id="wd-available-from" 
+                        defaultValue="2024-10-10" 
+                      />
+                    </Col>
+                    <Col>
+                      <Form.Label htmlFor="wd-available-until">Until</Form.Label>
+                      <Form.Control 
+                        type="date" 
+                        id="wd-available-until" 
+                        defaultValue="2024-11-11" 
+                      />
+                    </Col>
+                  </Row>
+                </div>
+              </Col>
+            </Row>
 
             <hr className="my-4" />
             

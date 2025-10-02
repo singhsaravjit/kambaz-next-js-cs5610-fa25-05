@@ -5,12 +5,12 @@ import { usePathname } from "next/navigation";
 export default function CourseNavigation() {
   const pathname = usePathname();
   
-  // Helper function to determine if a link is active
+
   const isActive = (path: string) => {
     return pathname?.includes(path);
   };
   
-  // Helper function to get the class names for each link
+  
   const getLinkClass = (path: string) => {
     const baseClass = "list-group-item border-0";
     return isActive(path) ? `${baseClass} active` : `${baseClass} text-danger`;

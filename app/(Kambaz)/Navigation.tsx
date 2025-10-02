@@ -1,7 +1,5 @@
 'use client';
 import { AiOutlineDashboard } from "react-icons/ai";
-import { IoCalendarOutline } from "react-icons/io5";
-import { LiaBookSolid, LiaCogSolid } from "react-icons/lia";
 import { FaBook, FaFlask, FaInbox, FaRegCircleUser } from "react-icons/fa6";
 import { ListGroup, ListGroupItem } from "react-bootstrap";
 import Link from "next/link";
@@ -16,12 +14,10 @@ export default function KambazNavigation() {
   const pathname = usePathname();
   const [activeButton, setActiveButton] = useState<string>("dashboard");
 
-  // Set active button based on pathname when component mounts or pathname changes
+
   useEffect(() => {
     if (pathname === "/Dashboard" || pathname?.startsWith("/Dashboard/") || 
         pathname?.startsWith("/Courses/")) {
-      // Keep the currently selected button active
-      // Don't change activeButton here to preserve which was clicked
     } else if (pathname === "/Calendar" || pathname?.startsWith("/Calendar/")) {
       setActiveButton("calendar");
     } else if (pathname === "/Inbox" || pathname?.startsWith("/Inbox/")) {
@@ -34,25 +30,22 @@ export default function KambazNavigation() {
   }, [pathname]);
 
   const isActive = (buttonName: string) => {
-    // For Dashboard/Courses, check if we're on Dashboard path AND the button matches
     if ((buttonName === "dashboard" || buttonName === "courses") && 
         (pathname === "/Dashboard" || pathname?.startsWith("/Dashboard/") || pathname?.startsWith("/Courses/"))) {
       return activeButton === buttonName;
     }
-    // For other buttons, just check the pathname
     return activeButton === buttonName;
   };
 
-  // Helper to compute classes per item
   const itemClasses = (active: boolean) =>
     active ? "bg-white" : "bg-black";
 
   const linkTextClasses = (active: boolean) =>
     active ? "text-danger" : "text-white";
 
-  // Helper to compute icon color based on active state
+
   const iconColorClasses = (active: boolean) =>
-    active ? "text-danger" : "text-danger"; // Icons stay red regardless of active state
+    active ? "text-danger" : "text-danger"; 
 
   return (
     <ListGroup 

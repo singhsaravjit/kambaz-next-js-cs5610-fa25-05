@@ -28,7 +28,7 @@ export default function Signin() {
               />
             </div>
 
-            <Link href="/Account/Profile" className="text-decoration-none">
+            <Link href="/Dashboard" className="text-decoration-none">
               <Button 
                 id="wd-signin-btn"
                 className="btn btn-primary w-100 btn-lg mb-3"
