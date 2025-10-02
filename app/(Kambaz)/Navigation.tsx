@@ -111,7 +111,7 @@ export default function KambazNavigation() {
       </ListGroupItem>
 
       <ListGroupItem className={`border-0 ${itemClasses(isActive("labs"))} text-center`}>
-        <Link href="/Labs" id="wd-labs-link" 
+        <Link href="/Labs/Lab1" id="wd-labs-link" 
               className={`${ITEM_CLASS} ${linkTextClasses(isActive("labs"))}`}
               onClick={() => setActiveButton("labs")}>
           <FaFlask className={`${ICON_CLASS} ${iconColorClasses(isActive("labs"))}`} />

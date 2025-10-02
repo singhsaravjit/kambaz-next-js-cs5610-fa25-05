@@ -22,28 +22,28 @@ export default function Modules() {
              <BsGripVertical className="me-2 fs-3" /> Introduction to the course <LessonControlButtons />
             </ListGroupItem>
             <ListGroupItem className="wd-lesson p-3 ps-1">
-              Learn what is Web Development
+              <BsGripVertical className="me-2 fs-3" />Learn what is Web Development<LessonControlButtons />
             </ListGroupItem>
             <ListGroupItem className="wd-lesson p-3 ps-1">
               <BsGripVertical className="me-2 fs-3" /> READING <LessonControlButtons />
             </ListGroupItem>
             <ListGroupItem className="wd-lesson p-3 ps-1">
-              Full Stack Developer - Chapter 1 - Introduction
+              <BsGripVertical className="me-2 fs-3" />Full Stack Developer - Chapter 1 - Introduction<LessonControlButtons />
             </ListGroupItem>
             <ListGroupItem className="wd-lesson p-3 ps-1">
-              Full Stack Developer - Chapter 2 - Creating User Interfaces
+              <BsGripVertical className="me-2 fs-3" />Full Stack Developer - Chapter 2 - Creating User Interfaces<LessonControlButtons />
             </ListGroupItem>
             <ListGroupItem className="wd-lesson p-3 ps-1">
              <BsGripVertical className="me-2 fs-3" /> SLIDES <LessonControlButtons />
             </ListGroupItem>
             <ListGroupItem className="wd-lesson p-3 ps-1">
-              Introduction to Web Development
+             <BsGripVertical className="me-2 fs-3" /> Introduction to Web Development<LessonControlButtons />
             </ListGroupItem>
             <ListGroupItem className="wd-lesson p-3 ps-1">
-              Creating an HTTP server with Node.js
+              <BsGripVertical className="me-2 fs-3" />Creating an HTTP server with Node.js<LessonControlButtons />
             </ListGroupItem>
             <ListGroupItem className="wd-lesson p-3 ps-1">
-              Creating a React Application
+              <BsGripVertical className="me-2 fs-3" />Creating a React Application<LessonControlButtons />
             </ListGroupItem>
           </ListGroup>
         </ListGroupItem>
@@ -58,22 +58,22 @@ export default function Modules() {
              <BsGripVertical className="me-2 fs-3" /> LEARNING OBJECTIVES <LessonControlButtons />
             </ListGroupItem>
             <ListGroupItem className="wd-lesson p-3 ps-1">
-              Learn how to create user interfaces with HTML
+             <BsGripVertical className="me-2 fs-3" /> Learn how to create user interfaces with HTML<LessonControlButtons />
             </ListGroupItem>
             <ListGroupItem className="wd-lesson p-3 ps-1">
-              Deploy the assignment to Netlify
+              <BsGripVertical className="me-2 fs-3" />Deploy the assignment to Netlify<LessonControlButtons />
             </ListGroupItem>
             <ListGroupItem className="wd-lesson p-3 ps-1">
              <BsGripVertical className="me-2 fs-3" /> SLIDES <LessonControlButtons />
             </ListGroupItem>
             <ListGroupItem className="wd-lesson p-3 ps-1">
-              Introduction to HTML and the DOM
+              <BsGripVertical className="me-2 fs-3" />Introduction to HTML and the DOM<LessonControlButtons />
             </ListGroupItem>
             <ListGroupItem className="wd-lesson p-3 ps-1">
-              Formatting Web content with Headings
+              <BsGripVertical className="me-2 fs-3" />Formatting Web content with Headings<LessonControlButtons />
             </ListGroupItem>
             <ListGroupItem className="wd-lesson p-3 ps-1">
-              Formatting content with Lists and Tables
+              <BsGripVertical className="me-2 fs-3" />Formatting content with Lists and Tables<LessonControlButtons />
             </ListGroupItem>
           </ListGroup>
         </ListGroupItem>
@@ -88,7 +88,7 @@ export default function Modules() {
               <BsGripVertical className="me-2 fs-3" /> LEARNING OBJECTIVES <LessonControlButtons />
             </ListGroupItem>
             <ListGroupItem className="wd-lesson p-3 ps-1">
-              Will be updated later on
+             <BsGripVertical className="me-2 fs-3" /> Will be updated later on <LessonControlButtons />
             </ListGroupItem>
           </ListGroup>
         </ListGroupItem>

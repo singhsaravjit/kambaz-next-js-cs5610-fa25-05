@@ -56,7 +56,7 @@ export default function Dashboard() {
                   <h5>CS3520 JavaScript</h5>
                 </CardTitle>
                 <CardText className="wd-dashboard-course-description">
-                  Programming Design & Implementation
+                  Programming Design
                 </CardText>
                 <Button variant="primary">Go</Button>
               </CardBody>
