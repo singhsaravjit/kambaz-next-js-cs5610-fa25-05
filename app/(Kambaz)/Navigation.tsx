@@ -1,10 +1,10 @@
-'use client';
+"use client"
 import { AiOutlineDashboard } from "react-icons/ai";
+import { FaCalendarAlt } from "react-icons/fa";
 import { FaBook, FaFlask, FaInbox, FaRegCircleUser } from "react-icons/fa6";
 import { ListGroup, ListGroupItem } from "react-bootstrap";
-import Link from "next/link";
-import { FaCalendarAlt } from "react-icons/fa";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import { useState, useEffect } from "react";
 
 const ITEM_CLASS = "text-decoration-none d-inline-block w-100 text-center py-2";
@@ -13,8 +13,16 @@ const ICON_CLASS = "fs-1 d-block mx-auto";
 export default function KambazNavigation() {
   const pathname = usePathname();
   const [activeButton, setActiveButton] = useState<string>("dashboard");
+  
+  const links = [
+    { label: "Dashboard", path: "/Dashboard", icon: AiOutlineDashboard, id: "wd-dashboard-link", name: "dashboard" },
+    { label: "Courses",   path: "/Dashboard", icon: FaBook, id: "wd-course-link", name: "courses" },
+    { label: "Calendar",  path: "/Calendar",  icon: FaCalendarAlt, id: "wd-calendar-link", name: "calendar" },
+    { label: "Inbox",     path: "/Inbox",     icon: FaInbox, id: "wd-inbox-link", name: "inbox" },
+    { label: "Labs",      path: "/Labs/Lab1", icon: FaFlask, id: "wd-labs-link", name: "labs" },
+  ];
 
-
+ 
   useEffect(() => {
     if (pathname === "/Dashboard" || pathname?.startsWith("/Dashboard/") || 
         pathname?.startsWith("/Courses/")) {
@@ -29,6 +37,7 @@ export default function KambazNavigation() {
     }
   }, [pathname]);
 
+  
   const isActive = (buttonName: string) => {
     if ((buttonName === "dashboard" || buttonName === "courses") && 
         (pathname === "/Dashboard" || pathname?.startsWith("/Dashboard/") || pathname?.startsWith("/Courses/"))) {
@@ -37,15 +46,15 @@ export default function KambazNavigation() {
     return activeButton === buttonName;
   };
 
+ 
   const itemClasses = (active: boolean) =>
     active ? "bg-white" : "bg-black";
 
   const linkTextClasses = (active: boolean) =>
     active ? "text-danger" : "text-white";
 
-
   const iconColorClasses = (active: boolean) =>
-    active ? "text-danger" : "text-danger"; 
+    active ? "text-danger" : "text-danger"; // Icons are always red as per original
 
   return (
     <ListGroup 
@@ -53,64 +62,44 @@ export default function KambazNavigation() {
       style={{ width: 110 }}
       id="wd-kambaz-navigation">
       
-      <ListGroupItem className="bg-black border-0 text-center" as="a"
-        target="_blank" href="https://www.northeastern.edu/" id="wd-neu-link">
+      <ListGroupItem 
+        className="bg-black border-0 text-center" 
+        as="a"
+        target="_blank" 
+        href="https://www.northeastern.edu/" 
+        id="wd-neu-link">
         <img src="/images/NULOGO.png" width="75px" alt="Northeastern University" />
       </ListGroupItem>
 
       <ListGroupItem className="border-0 bg-black text-center">
-        <Link href="/Account" id="wd-account-link" className="text-white text-decoration-none"
-              onClick={() => setActiveButton("account")}>
+        <Link 
+          href="/Account" 
+          id="wd-account-link" 
+          className="text-white text-decoration-none"
+          onClick={() => setActiveButton("account")}>
           <FaRegCircleUser className="fs-1 text-white" />
           <br />
           Account
         </Link>
       </ListGroupItem>
       
-      <ListGroupItem className={`border-0 ${itemClasses(isActive("dashboard"))} text-center`}>
-        <Link href="/Dashboard" id="wd-dashboard-link" 
-              className={`${ITEM_CLASS} ${linkTextClasses(isActive("dashboard"))}`}
-              onClick={() => setActiveButton("dashboard")}>
-          <AiOutlineDashboard className={`${ICON_CLASS} ${iconColorClasses(isActive("dashboard"))}`} />
-          Dashboard
-        </Link>
-      </ListGroupItem>
-
-      <ListGroupItem className={`border-0 ${itemClasses(isActive("courses"))} text-center`}>
-        <Link href="/Dashboard" id="wd-course-link" 
-              className={`${ITEM_CLASS} ${linkTextClasses(isActive("courses"))}`}
-              onClick={() => setActiveButton("courses")}>
-          <FaBook className={`${ICON_CLASS} ${iconColorClasses(isActive("courses"))}`} />
-          Courses
-        </Link>
-      </ListGroupItem>
-
-      <ListGroupItem className={`border-0 ${itemClasses(isActive("calendar"))} text-center`}>
-        <Link href="/Calendar" id="wd-calendar-link" 
-              className={`${ITEM_CLASS} ${linkTextClasses(isActive("calendar"))}`}
-              onClick={() => setActiveButton("calendar")}>
-          <FaCalendarAlt className={`${ICON_CLASS} ${iconColorClasses(isActive("calendar"))}`} />
-          Calendar
-        </Link>
-      </ListGroupItem>
-
-      <ListGroupItem className={`border-0 ${itemClasses(isActive("inbox"))} text-center`}>
-        <Link href="/Inbox" id="wd-inbox-link" 
-              className={`${ITEM_CLASS} ${linkTextClasses(isActive("inbox"))}`}
-              onClick={() => setActiveButton("inbox")}>
-          <FaInbox className={`${ICON_CLASS} ${iconColorClasses(isActive("inbox"))}`} />
-          Inbox
-        </Link>
-      </ListGroupItem>
-
-      <ListGroupItem className={`border-0 ${itemClasses(isActive("labs"))} text-center`}>
-        <Link href="/Labs/Lab1" id="wd-labs-link" 
-              className={`${ITEM_CLASS} ${linkTextClasses(isActive("labs"))}`}
-              onClick={() => setActiveButton("labs")}>
-          <FaFlask className={`${ICON_CLASS} ${iconColorClasses(isActive("labs"))}`} />
-          Labs
-        </Link>
-      </ListGroupItem>
+      {links.map((link) => {
+        const active = isActive(link.name);
+        return (
+          <ListGroupItem 
+            key={link.id}
+            className={`border-0 ${itemClasses(active)} text-center`}>
+            <Link 
+              href={link.path} 
+              id={link.id}
+              className={`${ITEM_CLASS} ${linkTextClasses(active)}`}
+              onClick={() => setActiveButton(link.name)}>
+              {link.icon({ className: `${ICON_CLASS} ${iconColorClasses(active)}` })}
+              {link.label}
+            </Link>
+          </ListGroupItem>
+        );
+      })}
     </ListGroup>
   );
 }

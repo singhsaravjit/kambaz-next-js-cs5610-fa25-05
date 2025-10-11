@@ -1,6 +1,34 @@
-import { Form, Button, Row, Col, Card } from "react-bootstrap";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client"
+import { useParams } from "next/navigation";
+import Link from "next/link";
+import { Form, Row, Col, Card } from "react-bootstrap";
+import * as db from "../../../../Database";
 
 export default function AssignmentEditor() {
+  const { cid, aid } = useParams();
+  
+ 
+  const assignment = db.assignments.find(
+    (a: any) => a._id === aid && a.course === cid
+  );
+
+ 
+  if (!assignment) {
+    return (
+      <div className="container-fluid mt-4">
+        <div className="alert alert-warning">
+          Assignment not found. 
+          <Link href={`/Courses/${cid}/Assignments`} className="ms-2">
+            Return to Assignments
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+ 
+
   return (
     <div id="wd-assignments-editor" className="container-fluid mt-4">
       <Row>
@@ -11,7 +39,7 @@ export default function AssignmentEditor() {
               <Form.Control
                 id="wd-name"
                 type="text"
-                defaultValue="A1"
+                defaultValue={assignment.title}
                 className="form-control"
               />
             </div>
@@ -23,7 +51,7 @@ export default function AssignmentEditor() {
                 id="wd-description"
                 rows={10}
                 style={{ lineHeight: '1.8' }}
-                defaultValue={`The assignment is available online
+                defaultValue={assignment.description || `The assignment is available online
 
 Submit a link to the landing page of your Web application running on Netlify.
 
@@ -46,7 +74,7 @@ The Kanbas application should include a link to navigate back to the landing pag
                 <Form.Control
                   id="wd-points"
                   type="number"
-                  defaultValue={100}
+                  defaultValue={assignment.points || 100}
                   style={{ maxWidth: "300px" }}
                 />
               </Col>
@@ -57,7 +85,10 @@ The Kanbas application should include a link to navigate back to the landing pag
                 <Form.Label>Assignment Group</Form.Label>
               </Col>
               <Col md={9}>
-                <Form.Select id="wd-group" defaultValue="ASSIGNMENTS" style={{ maxWidth: "100%" }}>
+                <Form.Select 
+                  id="wd-group" 
+                  defaultValue={assignment.group || "ASSIGNMENTS"} 
+                  style={{ maxWidth: "100%" }}>
                   <option value="ASSIGNMENTS">ASSIGNMENTS</option>
                   <option value="QUIZZES">QUIZZES</option>
                   <option value="EXAMS">EXAMS</option>
@@ -71,7 +102,10 @@ The Kanbas application should include a link to navigate back to the landing pag
                 <Form.Label>Display Grade as</Form.Label>
               </Col>
               <Col md={9}>
-                <Form.Select id="wd-display-grade-as" defaultValue="Percentage" style={{ maxWidth: "100%" }}>
+                <Form.Select 
+                  id="wd-display-grade-as" 
+                  defaultValue={assignment.displayGradeAs || "Percentage"} 
+                  style={{ maxWidth: "100%" }}>
                   <option value="Percentage">Percentage</option>
                   <option value="Points">Points</option>
                   <option value="Complete/Incomplete">Complete/Incomplete</option>
@@ -86,7 +120,10 @@ The Kanbas application should include a link to navigate back to the landing pag
               </Col>
               <Col md={9}>
                 <Card className="p-3">
-                  <Form.Select id="wd-submission-type" defaultValue="Online" className="mb-3">
+                  <Form.Select 
+                    id="wd-submission-type" 
+                    defaultValue={assignment.submissionType || "Online"} 
+                    className="mb-3">
                     <option value="Online">Online</option>
                     <option value="On Paper">On Paper</option>
                     <option value="No Submission">No Submission</option>
@@ -98,31 +135,35 @@ The Kanbas application should include a link to navigate back to the landing pag
                       type="checkbox"
                       id="wd-text-entry"
                       label="Text Entry"
+                      defaultChecked={assignment.textEntry || false}
                       className="mb-2"
                     />
                     <Form.Check
                       type="checkbox"
                       id="wd-website-url"
                       label="Website URL"
-                      defaultChecked
+                      defaultChecked={assignment.websiteUrl !== false}
                       className="mb-2"
                     />
                     <Form.Check
                       type="checkbox"
                       id="wd-media-recordings"
                       label="Media Recordings"
+                      defaultChecked={assignment.mediaRecordings || false}
                       className="mb-2"
                     />
                     <Form.Check
                       type="checkbox"
                       id="wd-student-annotation"
                       label="Student Annotation"
+                      defaultChecked={assignment.studentAnnotation || false}
                       className="mb-2"
                     />
                     <Form.Check
                       type="checkbox"
                       id="wd-file-upload"
                       label="File Uploads"
+                      defaultChecked={assignment.fileUpload || false}
                       className="mb-2"
                     />
                   </div>
@@ -140,7 +181,7 @@ The Kanbas application should include a link to navigate back to the landing pag
                   <div className="position-relative">
                     <Form.Control 
                       id="wd-assign-to" 
-                      defaultValue="Everyone" 
+                      defaultValue={assignment.assignTo || "Everyone"}
                       className="pe-5"
                       style={{ backgroundColor: '#f8f8f8' }}
                     />
@@ -162,7 +203,7 @@ The Kanbas application should include a link to navigate back to the landing pag
                   <Form.Control 
                     type="datetime-local" 
                     id="wd-due-date" 
-                    defaultValue="2024-10-10T23:59" 
+                    defaultValue={assignment.dueDateInput || "2024-05-13T23:59"}
                   />
                   
                   <Row className="mt-3">
@@ -171,7 +212,7 @@ The Kanbas application should include a link to navigate back to the landing pag
                       <Form.Control 
                         type="date" 
                         id="wd-available-from" 
-                        defaultValue="2024-10-10" 
+                        defaultValue={assignment.availableFromDate || "2024-05-06"}
                       />
                     </Col>
                     <Col>
@@ -179,7 +220,7 @@ The Kanbas application should include a link to navigate back to the landing pag
                       <Form.Control 
                         type="date" 
                         id="wd-available-until" 
-                        defaultValue="2024-11-11" 
+                        defaultValue={assignment.availableUntilDate || "2024-05-27"}
                       />
                     </Col>
                   </Row>
@@ -190,12 +231,16 @@ The Kanbas application should include a link to navigate back to the landing pag
             <hr className="my-4" />
             
             <div className="text-end">
-              <Button variant="secondary" className="me-2">
+              <Link 
+                href={`/Courses/${cid}/Assignments`}
+                className="btn btn-secondary me-2">
                 Cancel
-              </Button>
-              <Button variant="danger">
+              </Link>
+              <Link 
+                href={`/Courses/${cid}/Assignments`}
+                className="btn btn-danger">
                 Save
-              </Button>
+              </Link>
             </div>
           </Form>
         </Col>
