@@ -1,79 +1,59 @@
 'use client';
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useParams } from "next/navigation";
 
 export default function CourseNavigation() {
   const pathname = usePathname();
+  const params = useParams();
   
 
-  const isActive = (path: string) => {
-    return pathname?.includes(path);
+  const cid = params.cid as string;
+  
+ 
+  const links = ["Home", "Modules", "Piazza", "Zoom", "Assignments", "Quizzes", "Grades", "People"];
+  
+
+  const isActive = (linkName: string) => {
+    
+    if (linkName === "People") {
+      return pathname?.includes(`/Courses/${cid}/People`);
+    }
+   
+    return pathname?.includes(`/Courses/${cid}/${linkName}`);
   };
   
+
+  const getLinkHref = (linkName: string) => {
   
-  const getLinkClass = (path: string) => {
+    if (linkName === "People") {
+      return `/Courses/${cid}/People/Table`;
+    }
+    return `/Courses/${cid}/${linkName}`;
+  };
+  
+
+  const getLinkClass = (linkName: string) => {
     const baseClass = "list-group-item border-0";
-    return isActive(path) ? `${baseClass} active` : `${baseClass} text-danger`;
+    return isActive(linkName) ? `${baseClass} active` : `${baseClass} text-danger`;
+  };
+  
+
+  const getLinkId = (linkName: string) => {
+    return `wd-course-${linkName.toLowerCase()}-link`;
   };
 
   return (
     <div id="wd-courses-navigation" className="wd list-group fs-5 rounded-0">
-      <Link 
-        href="/Courses/1234/Home" 
-        id="wd-course-home-link"
-        className={getLinkClass("/Courses/1234/Home")}
-      >
-        Home
-      </Link>
-      <Link 
-        href="/Courses/1234/Modules" 
-        id="wd-course-modules-link"
-        className={getLinkClass("/Courses/1234/Modules")}
-      >
-        Modules
-      </Link>
-      <Link 
-        href="/Courses/1234/Piazza" 
-        id="wd-course-piazza-link"
-        className={getLinkClass("/Courses/1234/Piazza")}
-      >
-        Piazza
-      </Link>
-      <Link 
-        href="/Courses/1234/Zoom" 
-        id="wd-course-zoom-link"
-        className={getLinkClass("/Courses/1234/Zoom")}
-      >
-        Zoom
-      </Link>
-      <Link 
-        href="/Courses/1234/Assignments" 
-        id="wd-course-assignments-link"
-        className={getLinkClass("/Courses/1234/Assignments")}
-      >
-        Assignments
-      </Link>
-      <Link 
-        href="/Courses/1234/Quizzes" 
-        id="wd-course-quizzes-link"
-        className={getLinkClass("/Courses/1234/Quizzes")}
-      >
-        Quizzes
-      </Link>
-      <Link 
-        href="/Courses/1234/Grades" 
-        id="wd-course-grades-link"
-        className={getLinkClass("/Courses/1234/Grades")}
-      >
-        Grades
-      </Link>
-      <Link 
-        href="/Courses/1234/People/Table" 
-        id="wd-course-people-link"
-        className={getLinkClass("/Courses/1234/People")}
-      >
-        People
-      </Link>
+      {links.map((link) => (
+        <Link 
+          key={link}
+          href={getLinkHref(link)}
+          id={getLinkId(link)}
+          className={getLinkClass(link)}
+        >
+          {link}
+        </Link>
+      ))}
     </div>
   );
 }

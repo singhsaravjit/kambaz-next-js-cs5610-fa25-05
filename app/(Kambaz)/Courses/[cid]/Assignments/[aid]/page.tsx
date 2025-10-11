@@ -1,5 +1,4 @@
 import { Form, Button, Row, Col, Card } from "react-bootstrap";
-import { FaCalendarAlt, FaTimes } from "react-icons/fa";
 
 export default function AssignmentEditor() {
   return (
