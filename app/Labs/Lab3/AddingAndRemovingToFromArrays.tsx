@@ -1,7 +1,8 @@
+/* eslint-disable prefer-const */
 export default function AddingAndRemovingToFromArrays() {
-  const numberArray1 = [1, 2, 3, 4, 5];
-  const stringArray1 = ["string1", "string2"];
-  const todoArray = [<li key="test1">Buy milk</li>, <li key="test2">Feed the pets</li>];
+  let numberArray1 = [1, 2, 3, 4, 5];
+  let stringArray1 = ["string1", "string2"];
+  let todoArray = [<li key="check1">Buy milk</li>, <li key="check2">Feed the pets</li>];
   numberArray1.push(6); // adding new items
   stringArray1.push("string3");
   todoArray.push(<li key ="check">Walk the dogs</li>);
