@@ -25,11 +25,13 @@ import {
   Col,
   FormControl,
 } from "react-bootstrap";
+// 👇 import uuid for generating new course IDs locally
+import { v4 as uuidv4 } from "uuid";
 
 export default function Dashboard() {
   const dispatch = useDispatch();
 
-  // 1. hydrate (this may dispatch setCurrentUser on first effect)
+  // 1. hydrate (may dispatch setCurrentUser on mount)
   const hydratedUser = useHydrateUser();
 
   // 2. read Redux slices
@@ -39,10 +41,10 @@ export default function Dashboard() {
     (state: any) => state.enrollmentsReducer
   );
 
-  // 3. pick the best available user
+  // 3. pick best available user
   const effectiveUser = currentUser || hydratedUser;
 
-  // 4. UI state
+  // 4. UI state for the New Course form
   const [course, setCourse] = useState<any>({
     _id: "0",
     name: "New Course",
@@ -53,13 +55,12 @@ export default function Dashboard() {
     description: "New Description",
   });
 
-  // showAllCourses toggle
+  // toggle for "Show All Enrollments" vs "My Courses"
   const [showAllCourses, setShowAllCourses] = useState<boolean>(false);
 
-  // NEW: gate rendering until we've done at least one hydration pass
+  // we gate rendering until first client pass to avoid flicker
   const [ready, setReady] = useState(false);
   useEffect(() => {
-    // this runs after first client render
     setReady(true);
   }, []);
 
@@ -71,14 +72,16 @@ export default function Dashboard() {
     );
   };
 
-  // choose courses to show
+  // list we actually render
   const visibleCourses = showAllCourses
     ? courses
     : courses.filter((c: any) => isEnrolled(c._id));
 
+  // can this user edit (add/delete/update courses)?
   const canEdit =
     effectiveUser?.role === "FACULTY" || effectiveUser?.role === "ADMIN";
 
+  // enroll / unenroll handlers
   const handleEnroll = (courseId: string) => {
     if (!effectiveUser?._id) return;
     dispatch(
@@ -99,11 +102,49 @@ export default function Dashboard() {
     );
   };
 
+  // 💡 NEW: Add Course flow that does NOT flip showAllCourses
+  const handleAddCourse = () => {
+    if (!canEdit) return;
+
+    // 1. make a fresh ID
+    const newId = uuidv4();
+
+    // 2. assemble the new course object
+    const newCourse = {
+      ...course,
+      _id: newId,
+    };
+
+    // 3. add to Redux courses
+    dispatch(addNewCourse(newCourse));
+
+    // 4. auto-enroll creator so it shows up in "My Courses"
+    if (effectiveUser?._id) {
+      dispatch(
+        enrollInCourse({
+          user: effectiveUser._id,
+          course: newId,
+        })
+      );
+    }
+
+    // 5. reset form for convenience
+    setCourse({
+      _id: "0",
+      name: "New Course",
+      number: "New Number",
+      startDate: "2023-09-10",
+      endDate: "2023-12-15",
+      image: "/images/reactjs.jpg",
+      description: "New Description",
+    });
+
+    // ❌ DO NOT toggle showAllCourses here.
+    // We stay in the current view (often "My Courses").
+  };
+
   // ---------- RENDER ----------
-  // Before `ready` (first pass) we don't render the course grid.
-  // This prevents the flash of "0 courses" after redirect.
   if (!ready) {
-    // you could return a spinner here if you want
     return null;
   }
 
@@ -140,7 +181,7 @@ export default function Dashboard() {
             <button
               className="btn btn-primary float-end"
               id="wd-add-new-course-click"
-              onClick={() => dispatch(addNewCourse(course))}
+              onClick={handleAddCourse}
             >
               Add
             </button>
@@ -157,6 +198,7 @@ export default function Dashboard() {
           <hr />
           <br />
 
+          {/* Course Name */}
           <FormControl
             value={course.name}
             className="mb-2"
@@ -165,6 +207,7 @@ export default function Dashboard() {
             }
           />
 
+          {/* Description */}
           <FormControl
             as="textarea"
             rows={3}
@@ -228,7 +271,7 @@ export default function Dashboard() {
                         Go
                       </Button>
 
-                      {/* Enroll/Unenroll only in "Show All Enrollments" mode */}
+                      {/* Enroll / Unenroll buttons, ONLY in "Show All Enrollments" mode */}
                       {showAllCourses && (
                         <>
                           {enrolled ? (
@@ -257,7 +300,7 @@ export default function Dashboard() {
                         </>
                       )}
 
-                      {/* Faculty/Admin controls */}
+                      {/* Faculty/Admin edit + delete controls */}
                       {canEdit && (
                         <>
                           <button
