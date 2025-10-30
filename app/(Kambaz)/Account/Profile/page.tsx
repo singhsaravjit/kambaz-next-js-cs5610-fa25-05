@@ -1,96 +1,203 @@
-import Link from "next/link";
-import { Form, Button, Container, Card } from "react-bootstrap";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
+import { setCurrentUser } from "../reducer";
+import { Container, Card, Form, Button } from "react-bootstrap";
+
+// turn "01/22/2001" or "2001-01-22T00:00:00.000Z" into "2001-01-22"
+function normalizeDobToInput(rawDob: any): string {
+  if (!rawDob) return "";
+
+ 
+  if (/^\d{4}-\d{2}-\d{2}$/.test(rawDob)) {
+    return rawDob;
+  }
+
+
+  if (/^\d{2}\/\d{2}\/\d{4}$/.test(rawDob)) {
+    const [mm, dd, yyyy] = rawDob.split("/");
+    return `${yyyy}-${mm.padStart(2, "0")}-${dd.padStart(2, "0")}`;
+  }
+
+ 
+  const d = new Date(rawDob);
+  if (!isNaN(d.getTime())) {
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0"); // months 0-11
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
+
+  return "";
+}
 
 export default function Profile() {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+
+  const [profile, setProfile] = useState<any>({
+    username: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    dob: "",
+    email: "",
+    role: "USER",
+  });
+
+  
+  useEffect(() => {
+    if (!currentUser) {
+      router.replace("/Account/Signin");
+      return;
+    }
+
+    setProfile({
+      ...currentUser,
+      dob: normalizeDobToInput(currentUser.dob),
+    });
+  }, [currentUser, router]);
+
+  const signout = () => {
+    dispatch(setCurrentUser(null));
+    router.replace("/Account/Signin");
+  };
+
+  const inputStyle = {
+    backgroundColor: "#f8f9fa",
+    border: "1px solid #dee2e6",
+  };
+
   return (
-    <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "70vh" }}>
+    <Container
+      className="d-flex justify-content-center align-items-center"
+      style={{ minHeight: "70vh" }}
+    >
       <Card style={{ width: "400px" }} className="p-4 shadow-sm border-0">
         <div id="wd-profile-screen">
           <h2 className="mb-4">Profile</h2>
-          <Form>
-            <div className="mb-3">
-              <Form.Control
-                defaultValue="alice"
-                placeholder="username"
-                className="wd-username form-control-lg"
-                style={{ backgroundColor: "#f8f9fa", border: "1px solid #dee2e6" }}
-              />
-            </div>
 
-            <div className="mb-3">
-              <Form.Control
-                defaultValue="123"
-                placeholder="password"
-                type="password"
-                className="wd-password form-control-lg"
-                style={{ backgroundColor: "#f8f9fa", border: "1px solid #dee2e6" }}
-              />
-            </div>
+          {profile && (
+            <Form>
+           
+              <div className="mb-3">
+                <Form.Control
+                  id="wd-username"
+                  className="wd-username form-control-lg"
+                  placeholder="username"
+                  style={inputStyle}
+                  value={profile.username ?? ""}
+                  onChange={(e) =>
+                    setProfile({ ...profile, username: e.target.value })
+                  }
+                />
+              </div>
 
-            <div className="mb-3">
-              <Form.Control
-                defaultValue="Alice"
-                placeholder="First Name"
-                id="wd-firstname"
-                className="form-control-lg"
-                style={{ backgroundColor: "#f8f9fa", border: "1px solid #dee2e6" }}
-              />
-            </div>
+            
+              <div className="mb-3">
+                <Form.Control
+                  id="wd-password"
+                  className="wd-password form-control-lg"
+                  type="password"
+                  placeholder="password"
+                  style={inputStyle}
+                  value={profile.password ?? ""}
+                  onChange={(e) =>
+                    setProfile({ ...profile, password: e.target.value })
+                  }
+                />
+              </div>
 
-            <div className="mb-3">
-              <Form.Control
-                defaultValue="Wonderland"
-                placeholder="Last Name"
-                id="wd-lastname"
-                className="form-control-lg"
-                style={{ backgroundColor: "#f8f9fa", border: "1px solid #dee2e6" }}
-              />
-            </div>
+              <div className="mb-3">
+                <Form.Control
+                  id="wd-firstname"
+                  className="form-control-lg"
+                  placeholder="First Name"
+                  style={inputStyle}
+                  value={profile.firstName ?? ""}
+                  onChange={(e) =>
+                    setProfile({ ...profile, firstName: e.target.value })
+                  }
+                />
+              </div>
 
-            <div className="mb-3">
-              <Form.Control
-                defaultValue="mm/dd/yyyy"
-                placeholder="Date of Birth"
-                type="date"
-                id="wd-dob"
-                className="form-control-lg"
-                style={{ backgroundColor: "#f8f9fa", border: "1px solid #dee2e6" }}
-              />
-            </div>
+             
+              <div className="mb-3">
+                <Form.Control
+                  id="wd-lastname"
+                  className="form-control-lg"
+                  placeholder="Last Name"
+                  style={inputStyle}
+                  value={profile.lastName ?? ""}
+                  onChange={(e) =>
+                    setProfile({ ...profile, lastName: e.target.value })
+                  }
+                />
+              </div>
 
-            <div className="mb-3">
-              <Form.Control
-                defaultValue="alice@wonderland.com"
-                placeholder="Email"
-                type="email"
-                id="wd-email"
-                className="form-control-lg"
-                style={{ backgroundColor: "#f8f9fa", border: "1px solid #dee2e6" }}
-              />
-            </div>
+          
+              <div className="mb-3">
+                <Form.Control
+                  id="wd-dob"
+                  className="form-control-lg"
+                  type="date"
+                  placeholder="Date of Birth"
+                  style={inputStyle}
+                  value={profile.dob ?? ""}
+                  onChange={(e) =>
+                    setProfile({ ...profile, dob: e.target.value })
+                  }
+                />
+              </div>
 
-            <div className="mb-4">
-              <Form.Select 
-                defaultValue="USER"
-                id="wd-role"
-                className="form-control-lg"
-                style={{ backgroundColor: "#f8f9fa", border: "1px solid #dee2e6", cursor: "pointer" }}
-              >
-                <option value="USER">User</option>
-                <option value="ADMIN">Admin</option>
-                <option value="FACULTY">Faculty</option>
-                <option value="STUDENT">Student</option>
-              </Form.Select>
-            </div>
+             
+              <div className="mb-3">
+                <Form.Control
+                  id="wd-email"
+                  className="form-control-lg"
+                  type="email"
+                  placeholder="Email"
+                  style={inputStyle}
+                  value={profile.email ?? ""}
+                  onChange={(e) =>
+                    setProfile({ ...profile, email: e.target.value })
+                  }
+                />
+              </div>
 
-            <Link href="/Account/Signin" className="text-decoration-none">
-              <Button 
+              <div className="mb-4">
+                <Form.Select
+                  id="wd-role"
+                  className="form-control-lg"
+                  style={{ ...inputStyle, cursor: "pointer" }}
+                  value={profile.role ?? "USER"}
+                  onChange={(e) =>
+                    setProfile({ ...profile, role: e.target.value })
+                  }
+                >
+                  <option value="USER">User</option>
+                  <option value="ADMIN">Admin</option>
+                  <option value="FACULTY">Faculty</option>
+                  <option value="STUDENT">Student</option>
+                </Form.Select>
+              </div>
+
+      
+              <Button
+                id="wd-signout-btn"
+                onClick={signout}
                 className="btn btn-danger w-100 btn-lg"
-                style={{ backgroundColor: "#dc3545", border: "none" }}>
+                style={{ backgroundColor: "#dc3545", border: "none" }}
+              >
                 Signout
               </Button>
-            </Link>
-          </Form>
+            </Form>
+          )}
         </div>
       </Card>
     </Container>
