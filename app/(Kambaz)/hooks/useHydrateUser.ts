@@ -5,18 +5,13 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentUser } from "../Account/reducer";
 
-/**
- * Keeps accountReducer.currentUser in sync with localStorage.
- * - On mount: if Redux is empty but localStorage has a user, load it.
- * - Whenever Redux currentUser changes, save/remove localStorage.
- * Returns the effective current user object.
- */
+
 export default function useHydrateUser() {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state: any) => state.accountReducer);
 
   useEffect(() => {
-    // If currentUser already exists in Redux, sync it to localStorage
+ 
     if (currentUser && currentUser._id) {
       window.localStorage.setItem(
         "kanbas-current-user",
@@ -25,7 +20,7 @@ export default function useHydrateUser() {
       return;
     }
 
-    // Otherwise, try restoring from localStorage
+   
     try {
       const raw = window.localStorage.getItem("kanbas-current-user");
       if (!raw) return;
@@ -35,7 +30,7 @@ export default function useHydrateUser() {
         dispatch(setCurrentUser(parsed));
       }
     } catch (err) {
-      // bad JSON, ignore
+      console.error("Error hydrating user from localStorage", err);
     }
   }, [currentUser, dispatch]);
 

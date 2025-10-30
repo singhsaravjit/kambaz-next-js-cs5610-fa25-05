@@ -15,7 +15,7 @@ type ModulesControlsProps = {
   moduleName: string;
   setModuleName: (title: string) => void;
   addModule: () => void;
-  canEdit: boolean; // <-- NEW
+  canEdit: boolean;
 };
 
 export default function ModulesControls({
@@ -31,7 +31,7 @@ export default function ModulesControls({
 
   return (
     <div id="wd-modules-controls" className="text-nowrap">
-      {/* + Module button (FACULTY/ADMIN ONLY) */}
+
       {canEdit && (
         <>
           <Button
@@ -48,7 +48,7 @@ export default function ModulesControls({
             Module
           </Button>
 
-          {/* The modal/editor to actually add a module (also only if canEdit) */}
+         
           <ModuleEditor
             show={show}
             handleClose={handleClose}
@@ -60,7 +60,7 @@ export default function ModulesControls({
         </>
       )}
 
-      {/* Publish All dropdown -> ALWAYS visible */}
+    
       <Dropdown className="float-end me-2">
         <DropdownToggle
           variant="secondary"
@@ -88,7 +88,7 @@ export default function ModulesControls({
         </DropdownMenu>
       </Dropdown>
 
-      {/* View Progress -> ALWAYS visible */}
+    
       <Button
         variant="secondary"
         size="lg"
@@ -98,7 +98,7 @@ export default function ModulesControls({
         View Progress
       </Button>
 
-      {/* Collapse All -> ALWAYS visible */}
+     
       <Button
         variant="secondary"
         size="lg"

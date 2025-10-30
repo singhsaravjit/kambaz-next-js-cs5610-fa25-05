@@ -73,7 +73,7 @@ export default function Assignments() {
 
   return (
     <div id="wd-assignments" className="p-4">
-      {/* top bar */}
+      
       <div className="d-flex justify-content-between align-items-center mb-4">
         <InputGroup style={{ width: "300px" }}>
           <span className="input-group-text bg-white">
@@ -137,7 +137,7 @@ export default function Assignments() {
               index === courseAssignments.length - 1 ? "border-bottom" : ""
             }`}
           >
-            {/* green left bar */}
+         
             <div
               className="bg-success position-absolute"
               style={{

@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { setCurrentUser } from "../reducer";
 import { Container, Card, Form, Button } from "react-bootstrap";
 
-// turn "01/22/2001" or "2001-01-22T00:00:00.000Z" into "2001-01-22"
+
 function normalizeDobToInput(rawDob: any): string {
   if (!rawDob) return "";
 

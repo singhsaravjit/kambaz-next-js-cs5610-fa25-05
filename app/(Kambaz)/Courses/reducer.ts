@@ -11,7 +11,7 @@ const coursesSlice = createSlice({
   initialState,
   reducers: {
     addNewCourse: (state, { payload: newCourse }) => {
-      // payload already has _id
+      
       state.courses = [...state.courses, newCourse] as any;
     },
     deleteCourse: (state, { payload: courseId }) => {

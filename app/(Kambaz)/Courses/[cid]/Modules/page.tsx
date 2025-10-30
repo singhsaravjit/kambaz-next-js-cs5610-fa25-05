@@ -30,7 +30,7 @@ export default function Modules() {
 
   const { modules } = useSelector((state: any) => state.modulesReducer);
 
-  // NEW: get role info
+
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   const role = currentUser?.role;
   const canEdit = role === "FACULTY" || role === "ADMIN";
@@ -41,9 +41,7 @@ export default function Modules() {
 
   return (
     <div>
-      {/* Controls row:
-         - Collapse All / View Progress / Publish All -> always rendered
-         - "+ Module" / modal -> only if canEdit */}
+      {}
       <ModulesControls
         moduleName={moduleName}
         setModuleName={setModuleName}
@@ -51,8 +49,7 @@ export default function Modules() {
           dispatch(addModule({ name: moduleName, course: cid }));
           setModuleName("");
         }}
-        canEdit={canEdit} // <-- NEW
-      />
+        canEdit={canEdit} 
 
       <br />
       <br />
@@ -70,7 +67,7 @@ export default function Modules() {
               <div className="wd-title p-3 ps-2 bg-secondary">
                 <BsGripVertical className="me-2 fs-3" />
 
-                {/* Inline edit only if module.editing AND canEdit */}
+               
                 {module.editing && canEdit ? (
                   <FormControl
                     className="w-50 d-inline-block"
@@ -93,7 +90,7 @@ export default function Modules() {
                   <span>{module.name}</span>
                 )}
 
-                {/* Edit/Delete buttons only if canEdit */}
+               
                 {canEdit && (
                   <ModuleControlButtons
                     moduleId={module._id}
@@ -117,7 +114,7 @@ export default function Modules() {
                       <BsGripVertical className="me-2 fs-3" />
                       {lesson.name}
 
-                      {/* Per-lesson control buttons only if canEdit */}
+                     
                       {canEdit && <LessonControlButtons />}
                     </ListGroupItem>
                   ))}

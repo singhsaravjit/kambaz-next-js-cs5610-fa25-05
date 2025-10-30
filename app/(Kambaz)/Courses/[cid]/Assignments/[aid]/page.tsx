@@ -32,9 +32,9 @@ export default function AssignmentEditor() {
     points: 100,
 
    
-    dueDate: "", // datetime-local "YYYY-MM-DDTHH:MM"
-    availableFrom: "", // date "YYYY-MM-DD"
-    availableUntil: "", // date "YYYY-MM-DD"
+    dueDate: "", 
+    availableFrom: "", 
+    availableUntil: "",
 
   
     group: "ASSIGNMENTS",
