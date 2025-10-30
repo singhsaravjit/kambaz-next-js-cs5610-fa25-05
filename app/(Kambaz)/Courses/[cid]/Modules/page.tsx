@@ -30,7 +30,7 @@ export default function Modules() {
 
   const { modules } = useSelector((state: any) => state.modulesReducer);
 
-
+  
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   const role = currentUser?.role;
   const canEdit = role === "FACULTY" || role === "ADMIN";
@@ -50,6 +50,7 @@ export default function Modules() {
           setModuleName("");
         }}
         canEdit={canEdit} 
+      />
 
       <br />
       <br />
@@ -67,7 +68,7 @@ export default function Modules() {
               <div className="wd-title p-3 ps-2 bg-secondary">
                 <BsGripVertical className="me-2 fs-3" />
 
-               
+                
                 {module.editing && canEdit ? (
                   <FormControl
                     className="w-50 d-inline-block"
@@ -90,7 +91,7 @@ export default function Modules() {
                   <span>{module.name}</span>
                 )}
 
-               
+                
                 {canEdit && (
                   <ModuleControlButtons
                     moduleId={module._id}
@@ -114,7 +115,7 @@ export default function Modules() {
                       <BsGripVertical className="me-2 fs-3" />
                       {lesson.name}
 
-                     
+                      
                       {canEdit && <LessonControlButtons />}
                     </ListGroupItem>
                   ))}
