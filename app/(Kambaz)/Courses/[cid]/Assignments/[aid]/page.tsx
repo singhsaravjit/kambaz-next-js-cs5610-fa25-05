@@ -137,6 +137,19 @@ The Kanbas application should include a link to navigate back to the landing pag
     setFormData((prev: any) => ({ ...prev, [field]: !prev[field] }));
   };
 
+ 
+  const formatDateForDisplay = (dateString: string) => {
+    if (!dateString) return "";
+    try {
+      const date = new Date(dateString);
+      const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      const month = monthNames[date.getMonth()];
+      const day = date.getDate();
+      return `${month} ${day} at 12:00am`;
+    } catch (e) {
+      return "";
+    }
+  };
 
   const handleCancel = () => {
     router.push(`/Courses/${cid}/Assignments`);
@@ -159,12 +172,8 @@ The Kanbas application should include a link to navigate back to the landing pag
           points: formData.points,
 
        
-          availableFrom: formData.availableFrom
-            ? ""
-            : "",
-          dueDate: formData.dueDate
-            ? ""
-            : "",
+          availableFrom: formatDateForDisplay(formData.availableFrom),
+          dueDate: formatDateForDisplay(formData.dueDate),
 
           
           dueDateInput: formData.dueDate,
@@ -199,8 +208,8 @@ The Kanbas application should include a link to navigate back to the landing pag
           points: formData.points,
 
       
-          availableFrom: existing?.availableFrom ?? "",
-          dueDate: existing?.dueDate ?? "",
+          availableFrom: formatDateForDisplay(formData.availableFrom),
+          dueDate: formatDateForDisplay(formData.dueDate),
 
         
           dueDateInput: formData.dueDate,

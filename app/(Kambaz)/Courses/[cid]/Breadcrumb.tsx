@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React from "react";
 import { usePathname, useParams } from "next/navigation";
+import { useSelector } from "react-redux";
 
 interface BreadcrumbProps {
   course: { 
@@ -13,6 +15,9 @@ export default function Breadcrumb({ course }: BreadcrumbProps) {
   const pathname = usePathname();
   const params = useParams();
   const cid = params.cid as string;
+  
+  
+  const { assignments } = useSelector((state: any) => state.assignmentsReducer);
 
   const getCurrentSection = () => {
     
@@ -26,7 +31,11 @@ export default function Breadcrumb({ course }: BreadcrumbProps) {
       const assignmentId = segments[assignmentIndex + 1];
       
       if (assignmentId) {
-        return `Assignments > ${assignmentId}`;
+        const assignment = assignments.find((a: any) => a._id === assignmentId);
+        const assignmentName = assignmentId === 'new' 
+          ? 'New Assignment' 
+          : (assignment?.title || assignmentId);
+        return `Assignments > ${assignmentName}`;
       }
       return 'Assignments';
     }

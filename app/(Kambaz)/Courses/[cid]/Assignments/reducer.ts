@@ -22,6 +22,25 @@ const assignmentsSlice = createSlice({
         dueDate: assignment.dueDate ?? "",
         availableFrom: assignment.availableFrom ?? "",
         availableUntil: assignment.availableUntil ?? "",
+        
+       
+        dueDateInput: assignment.dueDateInput ?? "",
+        availableFromDate: assignment.availableFromDate ?? "",
+        availableUntilDate: assignment.availableUntilDate ?? "",
+        
+       
+        group: assignment.group ?? "ASSIGNMENTS",
+        displayGradeAs: assignment.displayGradeAs ?? "Percentage",
+        submissionType: assignment.submissionType ?? "Online",
+        
+       
+        textEntry: assignment.textEntry ?? false,
+        websiteUrl: assignment.websiteUrl ?? true,
+        mediaRecordings: assignment.mediaRecordings ?? false,
+        studentAnnotation: assignment.studentAnnotation ?? false,
+        fileUpload: assignment.fileUpload ?? false,
+        
+        assignTo: assignment.assignTo ?? "Everyone",
         course: assignment.course, 
       };
       state.assignments = [...state.assignments, newAssignment] as any;
