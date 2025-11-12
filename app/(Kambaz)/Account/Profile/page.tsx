@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-
+import * as client from "../client";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { setCurrentUser } from "../reducer";
-import { Container, Card, Form, Button } from "react-bootstrap";
+import { Container, Card, Form, Button, Alert } from "react-bootstrap";
 
 
 function normalizeDobToInput(rawDob: any): string {
@@ -39,6 +39,19 @@ export default function Profile() {
   const dispatch = useDispatch();
   const router = useRouter();
   const { currentUser } = useSelector((state: any) => state.accountReducer);
+  const [successMessage, setSuccessMessage] = useState<string>("");
+  
+  const updateProfile = async () => {
+    try {
+      const updatedProfile = await client.updateUser(profile);
+      dispatch(setCurrentUser(updatedProfile));
+      setSuccessMessage("Profile updated successfully!");
+      setTimeout(() => setSuccessMessage(""), 3000); // Clear message after 3 seconds
+    } catch (error) {
+      console.error("Failed to update profile:", error);
+    }
+  };
+
 
   const [profile, setProfile] = useState<any>({
     username: "",
@@ -63,7 +76,8 @@ export default function Profile() {
     });
   }, [currentUser, router]);
 
-  const signout = () => {
+  const signout = async () => {
+    await client.signout();
     dispatch(setCurrentUser(null));
     router.replace("/Account/Signin");
   };
@@ -187,7 +201,18 @@ export default function Profile() {
                 </Form.Select>
               </div>
 
-      
+              <Button onClick={updateProfile} className="btn btn-primary w-100 mb-2"> Update </Button>
+
+              {successMessage && (
+                <Alert
+                  variant="success"
+                  className="py-2 text-center mb-2"
+                  style={{ fontSize: "0.9rem" }}
+                >
+                  {successMessage}
+                </Alert>
+              )}
+
               <Button
                 id="wd-signout-btn"
                 onClick={signout}

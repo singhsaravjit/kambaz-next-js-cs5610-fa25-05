@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
@@ -18,7 +18,8 @@ import {
   Modal,
 } from "react-bootstrap";
 
-import { deleteAssignment } from "./reducer";
+import { setAssignments, deleteAssignment } from "./reducer";
+import * as coursesClient from "../../client";
 
 export default function Assignments() {
   const { cid } = useParams();
@@ -40,6 +41,22 @@ export default function Assignments() {
     (assignment: any) => assignment.course === cid
   );
 
+  // Fetch assignments on component load
+  useEffect(() => {
+    const fetchAssignments = async () => {
+      try {
+        const fetchedAssignments = await coursesClient.findAssignmentsForCourse(cid as string);
+        dispatch(setAssignments(fetchedAssignments));
+      } catch (error) {
+        console.error("Error fetching assignments:", error);
+      }
+    };
+
+    if (cid) {
+      fetchAssignments();
+    }
+  }, [cid, dispatch]);
+
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [assignmentToDelete, setAssignmentToDelete] = useState<any>(null);
@@ -57,9 +74,14 @@ export default function Assignments() {
   };
 
   
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (assignmentToDelete) {
-      dispatch(deleteAssignment(assignmentToDelete._id));
+      try {
+        await coursesClient.deleteAssignment(assignmentToDelete._id);
+        dispatch(deleteAssignment(assignmentToDelete._id));
+      } catch (error) {
+        console.error("Error deleting assignment:", error);
+      }
     }
     setShowDeleteModal(false);
     setAssignmentToDelete(null);

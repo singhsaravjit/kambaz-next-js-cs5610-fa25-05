@@ -2,7 +2,7 @@
 
 import { ReactNode } from "react";
 import { Provider } from "react-redux";
-
+import Session from "./Account/Session";
 import KambazNavigation from "./Navigation";
 import store from "./store";
 import "./styles.css";
@@ -14,6 +14,7 @@ export default function KambazLayout({
 }) {
   return (
     <Provider store={store}>
+       <Session>
       <div id="wd-kambaz">
         <div className="d-flex">
           <div>
@@ -24,6 +25,7 @@ export default function KambazLayout({
           </div>
         </div>
       </div>
+      </Session>
     </Provider>
   );
 }

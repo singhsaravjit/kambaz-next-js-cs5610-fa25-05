@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { Form, Row, Col, Card } from "react-bootstrap";
 import { addAssignment, updateAssignment } from "../reducer";
+import * as coursesClient from "../../../client";
 
 export default function AssignmentEditor() {
   const { cid, aid } = useParams();
@@ -155,83 +156,53 @@ The Kanbas application should include a link to navigate back to the landing pag
     router.push(`/Courses/${cid}/Assignments`);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!canEdit) {
       router.push(`/Courses/${cid}/Assignments`);
       return;
     }
 
-    if (aid === "new") {
-     
-      dispatch(
-        addAssignment({
-       
-          title: formData.title,
-          course: cid,
-          description: formData.description,
-          points: formData.points,
+    const assignmentData = {
+      title: formData.title,
+      course: cid,
+      description: formData.description,
+      points: formData.points,
 
-       
-          availableFrom: formatDateForDisplay(formData.availableFrom),
-          dueDate: formatDateForDisplay(formData.dueDate),
+      availableFrom: formatDateForDisplay(formData.availableFrom),
+      dueDate: formatDateForDisplay(formData.dueDate),
 
-          
-          dueDateInput: formData.dueDate,
-          availableFromDate: formData.availableFrom,
-          availableUntilDate: formData.availableUntil,
+      dueDateInput: formData.dueDate,
+      availableFromDate: formData.availableFrom,
+      availableUntilDate: formData.availableUntil,
 
-      
-          group: formData.group,
-          displayGradeAs: formData.displayGradeAs,
-          submissionType: formData.submissionType,
+      group: formData.group,
+      displayGradeAs: formData.displayGradeAs,
+      submissionType: formData.submissionType,
 
-          
-          textEntry: formData.textEntry,
-          websiteUrl: formData.websiteUrl,
-          mediaRecordings: formData.mediaRecordings,
-          studentAnnotation: formData.studentAnnotation,
-          fileUpload: formData.fileUpload,
+      textEntry: formData.textEntry,
+      websiteUrl: formData.websiteUrl,
+      mediaRecordings: formData.mediaRecordings,
+      studentAnnotation: formData.studentAnnotation,
+      fileUpload: formData.fileUpload,
 
-         
-          assignTo: formData.assignTo,
-        })
-      );
-    } else {
-      
-      dispatch(
-        updateAssignment({
+      assignTo: formData.assignTo,
+    };
+
+    try {
+      if (aid === "new") {
+        const newAssignment = await coursesClient.createAssignment(cid as string, assignmentData);
+        dispatch(addAssignment(newAssignment));
+      } else {
+        const updatedAssignment = await coursesClient.updateAssignment({
           _id: formData._id,
-
-          title: formData.title,
-          course: cid,
-          description: formData.description,
-          points: formData.points,
-
-      
-          availableFrom: formatDateForDisplay(formData.availableFrom),
-          dueDate: formatDateForDisplay(formData.dueDate),
-
-        
-          dueDateInput: formData.dueDate,
-          availableFromDate: formData.availableFrom,
-          availableUntilDate: formData.availableUntil,
-
-          group: formData.group,
-          displayGradeAs: formData.displayGradeAs,
-          submissionType: formData.submissionType,
-
-          textEntry: formData.textEntry,
-          websiteUrl: formData.websiteUrl,
-          mediaRecordings: formData.mediaRecordings,
-          studentAnnotation: formData.studentAnnotation,
-          fileUpload: formData.fileUpload,
-
-          assignTo: formData.assignTo,
-        })
-      );
+          ...assignmentData,
+        });
+        dispatch(updateAssignment(updatedAssignment));
+      }
+      router.push(`/Courses/${cid}/Assignments`);
+    } catch (error) {
+      console.error("Error saving assignment:", error);
     }
-
-    router.push(`/Courses/${cid}/Assignments`);
   };
 
   return (
