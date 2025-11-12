@@ -1,73 +1,154 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client"
+
+import { useState,useEffect } from "react";
+import { useParams } from "next/navigation";
+import * as client from "../../client";
+import {
+  FormControl,
+  ListGroup,
+  ListGroupItem
+} from "react-bootstrap";
+import { BsGripVertical } from "react-icons/bs";
+
+import ModulesControls from "./ModulesControls";
+import LessonControlButtons from "./LessonControlButtons";
+import ModuleControlButtons from "./ModuleControlButtons";
+
+import { useSelector, useDispatch } from "react-redux";
+import {
+  addModule,
+  editModule,
+  updateModule,
+  deleteModule,
+  setModules
+} from "./reducer";
+
 export default function Modules() {
+  const { cid } = useParams();
+  const dispatch = useDispatch();
+
+  const fetchModules = async () => {
+    const modules = await client.findModulesForCourse(cid as string);
+    dispatch(setModules(modules));
+  };
+  useEffect(() => {
+    fetchModules();
+  }, []);
+
+
+  const [moduleName, setModuleName] = useState("");
+
+  const { modules } = useSelector((state: any) => state.modulesReducer);
+
+  
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+  const role = currentUser?.role;
+  const canEdit = role === "FACULTY" || role === "ADMIN";
+
+  const finishEdit = (moduleObj: any) => {
+    dispatch(updateModule({ ...moduleObj, editing: false }));
+  };
+
+  const onCreateModuleForCourse = async () => {
+    if (!cid) return;
+    const newModule = { name: moduleName, course: cid };
+    const createdModule = await client.createModuleForCourse(cid as string, newModule);
+    dispatch(setModules([...modules, createdModule]));
+  };
+
+   const onRemoveModule = async (moduleId: string) => {
+    await client.deleteModule(moduleId);
+    dispatch(setModules(modules.filter((m: any) => m._id !== moduleId)));
+  };
+
+   const onUpdateModule = async (module: any) => {
+    await client.updateModule(module);
+    const newModules = modules.map((m: any) => m._id === module._id ? module : m );
+    dispatch(setModules(newModules));
+  };
+
+
   return (
     <div>
-      <button>Collapse All</button>
-      <button>View Progress</button>
-      <button>Publish All</button>
-      <button>Module</button>
-      <ul id="wd-modules">
-        <li className="wd-module" id="wd-week-1">
-          <div className="wd-title">Week 1</div>
-          <ul className="wd-lessons">
-            <li className="wd-lesson">
-              <span className="wd-title">LEARNING OBJECTIVES</span>
-              <ul className="wd-content">
-                <li className="wd-content-item">Introduction to the course</li>
-                <li className="wd-content-item">Learn what is Web Development</li>
-              </ul>
-            </li>
-            <li className="wd-lesson">
-              <span className="wd-title">READING</span>
-              <ul className="wd-content">
-                <li className="wd-content-item">Full Stack Developer - Chapter 1 - Introduction</li>
-                <li className="wd-content-item">Full Stack Developer - Chapter 2 - Creating User Interfaces</li>
-              </ul>
-            </li>
-            <li className="wd-lesson">
-              <span className="wd-title">SLIDES</span>
-              <ul className="wd-content">
-                <li className="wd-content-item">Introduction to Web Development</li>
-                <li className="wd-content-item">Creating an HTTP server with Node.js</li>
-                <li className="wd-content-item">Creating a React Application</li>
-              </ul>
-            </li>
-          </ul>
-        </li>
+      {}
+      <ModulesControls
+        moduleName={moduleName}
+        setModuleName={setModuleName}
+        addModule={onCreateModuleForCourse}
+        canEdit={canEdit}
+      />
 
-        <li className="wd-module" id="wd-week-2">
-          <div className="wd-title">Week 2</div>
-          <ul className="wd-lessons">
-            <li className="wd-lesson">
-              <span className="wd-title">LEARNING OBJECTIVES</span>
-              <ul className="wd-content">
-                <li className="wd-content-item">Learn how to create user interfaces with HTML</li>
-                <li className="wd-content-item">Deploy the assignment to Netlify</li>
-              </ul>
-            </li>
-            <li className="wd-lesson">
-              <span className="wd-title">SLIDES</span>
-              <ul className="wd-content">
-                <li className="wd-content-item">Introduction to HTML and the DOM</li>
-                <li className="wd-content-item">Formatting Web content with Headings</li>
-                <li className="wd-content-item">Formatting content with Lists and Tables</li>
-              </ul>
-            </li>
-          </ul>
-        </li>
+      <br />
+      <br />
+      <br />
+      <br />
 
-        <li className="wd-module" id="wd-week-3">
-          <div className="wd-title">Week 3</div>
-          <ul className="wd-lessons">
-            <li className="wd-lesson">
-              <span className="wd-title">LEARNING OBJECTIVES</span>
-              <ul className="wd-content">
-                <li className="wd-content-item">Will be updated later on</li>
-              </ul>
-            </li>
-          </ul>
-        </li>
+      <ListGroup id="wd-modules" className="rounded-0">
+        {modules.map((module: any) => (
+            <ListGroupItem
+              key={module._id}
+              className="wd-module p-0 mb-5 fs-5 border-gray"
+            >
+              <div className="wd-title p-3 ps-2 bg-secondary">
+                <BsGripVertical className="me-2 fs-3" />
 
-      </ul>
+                
+                {module.editing && canEdit ? (
+                  <FormControl
+                    className="w-50 d-inline-block"
+                    defaultValue={module.name}
+                    onChange={(e) =>
+                      dispatch(
+                        updateModule({
+                          ...module,
+                          name: e.target.value,
+                        })
+                      )
+                    }
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                         onUpdateModule({ ...module, editing: false });
+                      }
+                    }}
+                  />
+                ) : (
+                  <span>{module.name}</span>
+                )}
+
+                
+                {canEdit && (
+                  <ModuleControlButtons
+                    moduleId={module._id}
+                    deleteModule={(moduleId) => {
+                      onRemoveModule(moduleId);
+                    }}
+                    editModule={(moduleId) => {
+                      dispatch(editModule(moduleId));
+                    }}
+                  />
+                )}
+              </div>
+
+              {module.lessons && (
+                <ListGroup className="wd-lessons rounded-0">
+                  {module.lessons.map((lesson: any, index: number) => (
+                    <ListGroupItem
+                      key={lesson._id || `${module._id}-lesson-${index}`}
+                      className="wd-lesson p-3 ps-1"
+                    >
+                      <BsGripVertical className="me-2 fs-3" />
+                      {lesson.name}
+
+                      
+                      {canEdit && <LessonControlButtons />}
+                    </ListGroupItem>
+                  ))}
+                </ListGroup>
+              )}
+            </ListGroupItem>
+          ))}
+      </ListGroup>
     </div>
   );
 }
