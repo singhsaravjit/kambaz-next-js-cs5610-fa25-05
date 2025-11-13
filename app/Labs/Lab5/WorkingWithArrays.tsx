@@ -10,6 +10,13 @@ export default function WorkingWithArrays() {
     due: "2021-09-09",
     completed: false,
    });
+  
+  // Separate state for each section to avoid interference
+  const [todoIdToRetrieve, setTodoIdToRetrieve] = useState("1");
+  const [todoIdToRemove, setTodoIdToRemove] = useState("1");
+  const [todoToUpdate, setTodoToUpdate] = useState({ id: "1", title: "NodeJS Assignment" });
+  const [todoCompletedUpdate, setTodoCompletedUpdate] = useState({ id: "1", completed: false });
+  const [todoDescriptionUpdate, setTodoDescriptionUpdate] = useState({ id: "1", description: "Create a NodeJS server with ExpressJS" });
 
   return (
     <div id="wd-working-with-arrays">
@@ -18,11 +25,11 @@ export default function WorkingWithArrays() {
       <a id="wd-retrieve-todos" className="btn btn-primary" href={API}>
         Get Todos </a><hr/>
          <h4>Retrieving an Item from an Array by ID</h4>
-      <a id="wd-retrieve-todo-by-id" className="btn btn-primary float-end" href={`${API}/${todo.id}`}>
+      <a id="wd-retrieve-todo-by-id" className="btn btn-primary float-end" href={`${API}/${todoIdToRetrieve}`}>
         Get Todo by ID
       </a>
-      <FormControl id="wd-todo-id" defaultValue={todo.id} className="w-50"
-        onChange={(e) => setTodo({ ...todo, id: e.target.value })} />
+      <FormControl id="wd-todo-id" value={todoIdToRetrieve} className="w-50"
+        onChange={(e) => setTodoIdToRetrieve(e.target.value)} />
       <hr />
       <h3>Filtering Array Items</h3>
   <a id="wd-retrieve-completed-todos" className="btn btn-primary"
@@ -35,30 +42,30 @@ export default function WorkingWithArrays() {
     Create Todo
   </a><hr />
   <h3>Removing from an Array</h3>
-<a id="wd-remove-todo" className="btn btn-primary float-end" href={`${API}/${todo.id}/delete`}>
-   Remove Todo with ID = {todo.id} </a>
-<FormControl defaultValue={todo.id} className="w-50" onChange={(e) => setTodo({ ...todo, id: e.target.value })}/><hr/>
+<a id="wd-remove-todo" className="btn btn-primary float-end" href={`${API}/${todoIdToRemove}/delete`}>
+   Remove Todo with ID = {todoIdToRemove} </a>
+<FormControl value={todoIdToRemove} className="w-50" onChange={(e) => setTodoIdToRemove(e.target.value)}/><hr/>
 <h3>Updating an Item in an Array</h3>
-      <a href={`${API}/${todo.id}/title/${todo.title}`} className="btn btn-primary float-end">
+      <a href={`${API}/${todoToUpdate.id}/title/${todoToUpdate.title}`} className="btn btn-primary float-end">
         Update Todo</a>
-      <FormControl defaultValue={todo.id} className="w-25 float-start me-2"
-        onChange={(e) => setTodo({ ...todo, id: e.target.value })}/>
-      <FormControl defaultValue={todo.title} className="w-50 float-start"
-             onChange={(e) => setTodo({ ...todo, title: e.target.value }) }/>
+      <FormControl value={todoToUpdate.id} className="w-25 float-start me-2"
+        onChange={(e) => setTodoToUpdate({ ...todoToUpdate, id: e.target.value })}/>
+      <FormControl value={todoToUpdate.title} className="w-50 float-start"
+             onChange={(e) => setTodoToUpdate({ ...todoToUpdate, title: e.target.value }) }/>
       <br /><br /><hr />
 
       <h4>Updating Completed Property</h4>
-      <a href={`${API}/${todo.id}/completed/${todo.completed}`} 
+      <a href={`${API}/${todoCompletedUpdate.id}/completed/${todoCompletedUpdate.completed}`} 
          className="btn btn-primary float-end">
         Update Completed
       </a>
-      <FormControl defaultValue={todo.id} className="w-25 float-start me-2"
-        onChange={(e) => setTodo({ ...todo, id: e.target.value })}/>
+      <FormControl value={todoCompletedUpdate.id} className="w-25 float-start me-2"
+        onChange={(e) => setTodoCompletedUpdate({ ...todoCompletedUpdate, id: e.target.value })}/>
       <div className="form-check float-start">
         <input className="form-check-input" type="checkbox" 
           id="wd-todo-completed"
-          checked={todo.completed} 
-          onChange={(e) => setTodo({ ...todo, completed: e.target.checked })}/>
+          checked={todoCompletedUpdate.completed} 
+          onChange={(e) => setTodoCompletedUpdate({ ...todoCompletedUpdate, completed: e.target.checked })}/>
         <label className="form-check-label" htmlFor="wd-todo-completed">
           Completed
         </label>
@@ -67,12 +74,12 @@ export default function WorkingWithArrays() {
       <hr />
 
       <h4>Updating Description Property</h4>
-      <a href={`${API}/${todo.id}/description/${todo.description}`} className="btn btn-primary float-end">
+      <a href={`${API}/${todoDescriptionUpdate.id}/description/${todoDescriptionUpdate.description}`} className="btn btn-primary float-end">
         Update Description</a>
-      <FormControl defaultValue={todo.id} className="w-25 float-start me-2"
-        onChange={(e) => setTodo({ ...todo, id: e.target.value })}/>
-      <FormControl value={todo.description} className="w-25 float-start"
-        onChange={(e) => setTodo({ ...todo, description: e.target.value })}/>
+      <FormControl value={todoDescriptionUpdate.id} className="w-25 float-start me-2"
+        onChange={(e) => setTodoDescriptionUpdate({ ...todoDescriptionUpdate, id: e.target.value })}/>
+      <FormControl value={todoDescriptionUpdate.description} className="w-25 float-start"
+        onChange={(e) => setTodoDescriptionUpdate({ ...todoDescriptionUpdate, description: e.target.value })}/>
       <br /><br /><hr />
 
     </div>
