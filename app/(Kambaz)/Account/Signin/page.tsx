@@ -30,30 +30,30 @@ export default function Signin() {
   const [error, setError] = useState<string>("");
 
   const signin = async () => {
-    const user = await client.signin(credentials);
+    try {
+      const user = await client.signin(credentials);
 
-    if (!user) {
-      
-      setError("Invalid username or password.");
-      return;
+      if (!user) {
+        setError("Invalid username or password.");
+        return;
+      }
+
+      dispatch(setCurrentUser(user));
+
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem(
+          "kanbas-current-user",
+          JSON.stringify(user)
+        );
+      }
+
+      setError("");
+      router.push("/Dashboard");
+    } catch (error: any) {
+      // Handle 401 or other errors
+      const errorMessage = error.response?.data?.message || "Unable to login. Please check your credentials.";
+      setError(errorMessage);
     }
-
-    
-    dispatch(setCurrentUser(user));
-
-   
-    if (typeof window !== "undefined") {
-      window.localStorage.setItem(
-        "kanbas-current-user",
-        JSON.stringify(user)
-      );
-    }
-
-    
-    setError("");
-
-    
-    router.push("/Dashboard");
   };
 
   return (
