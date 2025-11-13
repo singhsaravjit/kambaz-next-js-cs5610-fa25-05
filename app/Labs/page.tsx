@@ -24,8 +24,13 @@ export default function Labs() {
         <li>
           <Link href="/">Kambaz</Link>
         </li>
+        <li>
+          <Link href="https://kambaz-node-server-app-v8ps.onrender.com/">Server</Link>
+        </li>
       </ul>
-      Github: <Link id="wd-github" href="https://github.com/singhsaravjit/kambaz-next-js-cs5610-fa25-05">Click Here</Link> to get the code!
+      Github: <Link id="wd-github" href="https://github.com/singhsaravjit/kambaz-next-js-cs5610-fa25-05">Click Here</Link> to get the React code!
+      <br />
+       Github: <Link id="wd-github" href="https://github.com/singhsaravjit/kambaz-node-server-app">Click Here</Link> to get the Server code!
     </div>
   );
 } 
