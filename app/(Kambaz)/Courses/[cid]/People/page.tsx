@@ -2,10 +2,10 @@
 "use client"
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import * as client from "../../../client";
-import PeopleTable from "../Table";
+import * as client from "../../client";
+import PeopleTable from "./Table";
 
-export default function PeopleTablePage() {
+export default function PeoplePage() {
   const { cid } = useParams();
   const [users, setUsers] = useState<any[]>([]);
 

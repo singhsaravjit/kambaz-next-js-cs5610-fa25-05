@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { setCurrentUser } from "../reducer";
-import * as db from "../../Database";
 import {
   Form,
   Button,
