@@ -41,6 +41,11 @@ export default function Dashboard() {
     (state: any) => state.enrollmentsReducer
   );
 
+  // Debug: log enrollments changes
+  useEffect(() => {
+    console.log("Enrollments updated:", enrollments);
+  }, [enrollments]);
+
   
   const effectiveUser = currentUser || hydratedUser;
 
@@ -59,9 +64,11 @@ export default function Dashboard() {
 
   const fetchCourses = async () => {
     try {
+      console.log("Fetching courses, showAllCourses:", showAllCourses);
       const courses = showAllCourses 
         ? await client.fetchAllCourses()
         : await client.findMyCourses();
+      console.log("Fetched courses:", courses.length);
       dispatch(setCourses(courses));
     } catch (error) {
       console.error(error);
@@ -82,9 +89,22 @@ export default function Dashboard() {
     dispatch(setCourses([ ...courses, newCourse ]));
   };
 
-   const onDeleteCourse = async (courseId: string) => {
-    const status = await client.deleteCourse(courseId);
-    dispatch(setCourses(courses.filter((course: any) => course._id !== courseId)));
+  const onDeleteCourse = async (courseId: string) => {
+    // Unenroll the current user from the course instead of deleting it
+    if (!effectiveUser?._id) return;
+    try {
+      await client.unenrollFromCourse(effectiveUser._id, courseId);
+      dispatch(
+        unenrollFromCourse({
+          user: effectiveUser._id,
+          course: courseId,
+        })
+      );
+      // Remove from displayed courses
+      dispatch(setCourses(courses.filter((course: any) => course._id !== courseId)));
+    } catch (error) {
+      console.error("Error unenrolling from course:", error);
+    }
   };
 
   const onUpdateCourse = async () => {
@@ -109,9 +129,14 @@ export default function Dashboard() {
  
   const isEnrolled = (courseId: string) => {
     if (!effectiveUser?._id) return false;
-    return enrollments.some(
-      (e: any) => e.user === effectiveUser._id && e.course === courseId
+    const enrolled = enrollments.some(
+      (e: any) => {
+        console.log(`Checking enrollment:`, { enrollmentUser: e.user, actualUser: effectiveUser._id, enrollmentCourse: e.course, actualCourse: courseId, match: e.user === effectiveUser._id && e.course === courseId });
+        return e.user === effectiveUser._id && e.course === courseId;
+      }
     );
+    console.log(`isEnrolled check for course ${courseId}:`, enrolled, "user:", effectiveUser._id, "enrollments:", enrollments.length);
+    return enrolled;
   };
 
   
@@ -129,6 +154,8 @@ export default function Dashboard() {
           course: courseId,
         })
       );
+      console.log("Enrolled in course:", courseId);
+      console.log("Current enrollments:", enrollments);
     } catch (error) {
       console.error("Error enrolling in course:", error);
     }
@@ -280,11 +307,12 @@ export default function Dashboard() {
       <div id="wd-dashboard-courses">
         <Row xs={1} md={5} className="g-4">
           {courses.map((c: any) => {
+            // Recalculate enrollment status on every render when enrollments change
             const enrolled = isEnrolled(c._id);
 
             return (
               <Col
-                key={c._id ?? c.number ?? c.name}
+                key={`${c._id}-${enrolled}`}
                 className="wd-dashboard-course"
                 style={{ width: "300px" }}
               >
